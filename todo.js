@@ -1,21 +1,27 @@
 document.addEventListener('DOMContentLoaded', function() {
-    document.querySelector('#submit').disabled = true;
-    document.querySelector('#task').onkeyup = () =>{
-        if (document.querySelector('#task').value.length > 0) {
-            document.querySelector('#submit').disabled = false;
-        }
-        else {
-            document.querySelector('#submit').disabled = true;
-        }
-    }       
-    document.querySelector('form').onsubmit = () =>{
-        const task = document.querySelector('#task').value;
-        const li = document.createElement('li');
-        li.innerHTML = task;
-        document.querySelector('#tasks').append(li);
-        document.querySelector('#task').value = '';
-        document.querySelector('#submit').disabled = true;
+    const form = document.querySelector('#todo-form');
+    const taskInput = document.querySelector('#task');
+    const submitBtn = document.querySelector('#submit');
+    const resetBtn = document.querySelector('#reset');
+    const taskList = document.querySelector('#tasks');
 
-        return false;
-    }
+    form.addEventListener('submit', function(event) {
+        event.preventDefault(); 
+
+        const task = taskInput.value;
+        if (task.trim() !== '') {
+            const li = document.createElement('li');
+            li.textContent = task;
+            taskList.appendChild(li);
+            taskInput.value = '';
+        }
+    });
+
+    resetBtn.addEventListener('click', function() {
+        taskList.innerHTML = '';
+    });
+
+    taskInput.addEventListener('input', function() {
+        submitBtn.disabled = taskInput.value.trim() === '';
+    });
 });
